@@ -1,5 +1,5 @@
 # from https://www.drupal.org/docs/8/system-requirements/drupal-8-php-requirements
-FROM php:7.2-buster
+FROM php:7.2-apache-buster
 # TODO switch to buster once https://github.com/docker-library/php/issues/865 is resolved in a clean way (either in the PHP image or in PHP itself)
 
 # install the PHP extensions we need
@@ -35,7 +35,6 @@ RUN set -eux; \
 		mbstring \
 		snmp \
 		soap \
-		cli \
 		tidy \
 		zip \
 	; \
@@ -55,12 +54,12 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # set recommended PHP.ini settings
-ENV PHP_MEMORY_LIMIT 1024M
-ENV PHP_MAX_EXECUTION_TIME 900
-RUN sed -i \
-    -e "s/^memory_limit.*\$/memory_limit = $PHP_MEMORY_LIMIT/g" \
-    -e "s/^max_execution_time.*\$/max_execution_time = $PHP_MAX_EXECUTION_TIME/g" \
-    /usr/local/etc/php/php.ini-production
+#ENV PHP_MEMORY_LIMIT 1024M
+#ENV PHP_MAX_EXECUTION_TIME 900
+#RUN sed -i \
+#    -e "s/^memory_limit.*\$/memory_limit = $PHP_MEMORY_LIMIT/g" \
+#    -e "s/^max_execution_time.*\$/max_execution_time = $PHP_MAX_EXECUTION_TIME/g" \
+#    /usr/local/etc/php/php.ini-production
 
 # see https://secure.php.net/manual/en/opcache.installation.php
 RUN { \
@@ -76,9 +75,8 @@ WORKDIR /var/www/html
 # https://www.drupal.org/node/3060/release
 ENV OPENATRIUM_VER 7.x-2.646
 ENV DRUPAL_MD5 fbc3c4b588c4e7623f3f26ff54721685
-
 RUN set -eux; \
-	curl -fSL "https://ftp.drupal.org/files/projects/openatrium-${OPENATRIUM_VER}.tar.gz" -o drupal.tar.gz; \
+	curl -fSL "https://ftp.drupal.org/files/projects/openatrium-${OPENATRIUM_VER}-core.tar.gz" -o drupal.tar.gz; \
 	echo "${DRUPAL_MD5} *drupal.tar.gz" | md5sum -c -; \
 	tar -xz --strip-components=1 -f drupal.tar.gz; \
 	rm drupal.tar.gz; \
