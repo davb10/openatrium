@@ -67,8 +67,12 @@ RUN { \
 WORKDIR /var/www/html
 
 # https://www.drupal.org/node/3060/release
-RUN rm -f /var/www/html/*
-RUN curl http://ftp.drupal.org/files/projects/openatrium-7.x-2.646-core.tar.gz | tar xz -C /var/www/html --strip-components=1 \
-	chown -R www-data:www-data sites modules themes
+ENV DRUPAL_MD5 d075c610c29f6de98080584610ffa241
+RUN set -eux; \
+	curl -fSL "https://ftp.drupal.org/files/projects/openatrium-7.x-2.646-core.tar.gz"; \
+	echo "${DRUPAL_MD5} *openatrium-7.x-2.646-core.tar.gz" | md5sum -c -; \
+	tar -xz --strip-components=1 -f openatrium-7.x-2.646-core.tar.gz; \
+	rm openatrium-7.x-2.646-core.tar.gz; \
+	chown -R www-data:www-data sites modules themes profiles
 
 # vim:set ft=dockerfile:
