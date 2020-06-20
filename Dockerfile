@@ -74,7 +74,7 @@ RUN { \
 WORKDIR /var/www/html
 
 # https://www.drupal.org/node/3060/release
-ENV OPENATRIUM_VER https://ftp.drupal.org/files/projects/openatrium-7.x-2.646.tar.gz
+ENV OPENATRIUM_VER 7.x-2.646
 ENV DRUPAL_MD5 fbc3c4b588c4e7623f3f26ff54721685
 
 RUN set -eux; \
