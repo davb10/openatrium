@@ -30,12 +30,6 @@ RUN set -eux; \
 		gd \
 		opcache \
 		pdo_mysql \
-		xml \
-		xmlrpc \
-		mbstring \
-		snmp \
-		soap \
-		tidy \
 		zip \
 	; \
 	\
